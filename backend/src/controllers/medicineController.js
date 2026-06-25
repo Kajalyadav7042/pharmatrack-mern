@@ -72,13 +72,79 @@ if (!mongoose.Types.ObjectId.isValid(vendorId)) {
 
 const getMedicines = async (req, res) => {
   try {
-    const medicines = await Medicine.find({
-      isDeleted: false,
-    })
-      .populate("vendorId", "name email phone")
-      .populate("createdBy", "name email");
+    const {
+      search,
+      lowStock,
+      outOfStock,
+      expiringSoon,
+      page = 1,
+      limit = 10,
+      sortBy = "createdAt",
+      order = "desc",
+    } = req.query;
 
-    res.status(200).json(medicines);
+    const query = {
+      isDeleted: false,
+    };
+
+    // Search
+    if (search) {
+      query.name = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    // Out Of Stock
+    if (outOfStock === "true") {
+      query.quantity = 0;
+    }
+
+    // Expiring Soon
+    if (expiringSoon === "true") {
+      const today = new Date();
+
+      const next30Days = new Date();
+
+      next30Days.setDate(today.getDate() + 30);
+
+      query.expiryDate = {
+        $gte: today,
+        $lte: next30Days,
+      };
+    }
+
+    // Low Stock
+    // MongoDB field-to-field comparison
+    if (lowStock === "true") {
+      query.$expr = {
+        $lte: ["$quantity", "$reorderLevel"],
+      };
+    }
+
+    const totalRecords =
+      await Medicine.countDocuments(query);
+
+    const medicines = await Medicine.find(query)
+      .populate("vendorId", "name")
+      .populate("createdBy", "name email")
+      .sort({
+        [sortBy]: order === "asc" ? 1 : -1,
+      })
+      .skip((page - 1) * Number(limit))
+      .limit(Number(limit));
+
+    res.status(200).json({
+      totalRecords,
+
+      currentPage: Number(page),
+
+      totalPages: Math.ceil(
+        totalRecords / Number(limit)
+      ),
+
+      medicines,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
