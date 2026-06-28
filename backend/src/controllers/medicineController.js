@@ -81,6 +81,7 @@ const getMedicines = async (req, res) => {
       limit = 10,
       sortBy = "createdAt",
       order = "desc",
+      vendorId,
     } = req.query;
 
     const query = {
@@ -94,6 +95,10 @@ const getMedicines = async (req, res) => {
         $options: "i",
       };
     }
+
+    if (vendorId) {
+  query.vendorId = vendorId;
+}
 
     // Out Of Stock
     if (outOfStock === "true") {

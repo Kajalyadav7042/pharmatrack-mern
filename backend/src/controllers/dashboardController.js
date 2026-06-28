@@ -18,6 +18,13 @@ const getDashboardStats = async (req, res) => {
       isDeleted: false,
     });
 
+
+    const lowStockMedicines = medicines.filter(
+  (medicine) =>
+    medicine.quantity <= medicine.reorderLevel
+);
+
+
     const lowStockCount = medicines.filter(
       (medicine) =>
         medicine.quantity <= medicine.reorderLevel
@@ -39,6 +46,18 @@ const getDashboardStats = async (req, res) => {
           $lte: next30Days,
         },
       });
+
+      const expiringSoonMedicines =
+await Medicine.find({
+  isDeleted:false,
+  expiryDate:{
+    $gte:today,
+    $lte:next30Days
+  }
+})
+.select(
+"name quantity expiryDate"
+);
 
     // Today's Sales
 
@@ -74,11 +93,11 @@ const getDashboardStats = async (req, res) => {
       totalMedicines,
 
       totalVendors,
-
+      lowStockMedicines,
       lowStockCount,
 
       expiringSoonCount,
-
+      expiringSoonMedicines,
       todaySales:
         todaySales.length > 0
           ? todaySales[0].total

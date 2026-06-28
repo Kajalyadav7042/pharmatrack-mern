@@ -17,7 +17,11 @@ router.post(
   createOrder
 );
 
-router.get("/",getOrders)
+router.get(
+  "/",
+  authorizeRoles("admin"),
+  getOrders
+);
 
 
 router.put("/:id/status",authorizeRoles("admin"),updateOrderStatus)

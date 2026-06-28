@@ -47,10 +47,11 @@ const createSale = async (req, res) => {
       totalAmount += subtotal;
 
       saleMedicines.push({
-        medicineId: item.medicineId,
-        quantity: item.quantity,
-        sellingPrice,
-      });
+  medicineId: item.medicineId,
+  quantity: item.quantity,
+  sellingPrice,
+  subtotal,
+});
 
       medicine.quantity -= item.quantity;
 
@@ -76,6 +77,30 @@ const createSale = async (req, res) => {
   }
 };
 
+const getSales = async (req, res) => {
+  try {
+    const sales = await Sale.find()
+      .populate(
+        "medicines.medicineId",
+        "name"
+      )
+      .populate(
+        "soldBy",
+        "name email"
+      )
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(sales);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+};
+
 module.exports = {
-  createSale,
+  createSale, getSales
 };
