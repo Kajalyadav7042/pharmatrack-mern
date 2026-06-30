@@ -8,6 +8,12 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
+import { MdWorkHistory } from "react-icons/md";
+
+import { VscOrganization } from "react-icons/vsc";
+
+
+
 import { NavLink } from "react-router-dom";
 
 const menus = [
@@ -37,10 +43,23 @@ const menus = [
     icon: <FaCashRegister />,
   },
   {
+    name: "Sale History",
+    path: "/sales/history",
+    icon: <MdWorkHistory />,
+  },
+  {
+    name: "Users",
+    path: "/users",
+    icon: <VscOrganization />
+,
+  },
+  
+  {
     name: "Profile",
     path: "/profile",
     icon: <FaUser />,
   },
+
 ];
 
 function Sidebar() {

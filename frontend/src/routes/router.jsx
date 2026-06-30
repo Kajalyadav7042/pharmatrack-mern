@@ -13,6 +13,11 @@ import CreateSale from "../pages/sales/CreateSale";
 import VendorList from "../pages/vendors/VendorList";
 import AddVendor from "../pages/vendors/AddVendor";
 import EditVendor from "../pages/vendors/EditVendor";
+import SalesHistory from "../pages/sales/SaleHistory";
+import UserList from "../pages/users/UserList";
+import AddUser from "../pages/users/AddUser";
+import EditUser from "../pages/users/EditUser";
+
 
 
 
@@ -61,17 +66,40 @@ const router = createBrowserRouter([
 },
 {
   path: "/vendors",
-  element: <VendorList />
+  element: <PrivateRoute>
+    <VendorList />
+  </PrivateRoute>
 },
 {
     path:"/vendors/add",
-    element:<AddVendor/>
+    element:<PrivateRoute>
+      <AddVendor/>
+    </PrivateRoute>
 },
 
 {
   path: "/vendors/edit/:id",
-  element: <EditVendor />,
-}
+  element: <PrivateRoute>
+    <EditVendor />
+  </PrivateRoute>,
+},
+{
+  path:"/sales/history",
+  element:<SalesHistory/>
+
+},
+{
+  path: "/users",
+  element: <UserList />,
+},
+{
+  path: "/users/add",
+  element: <AddUser />,
+},
+{
+  path: "/users/edit/:id",
+  element: <EditUser />,
+},
 
 
     ],
