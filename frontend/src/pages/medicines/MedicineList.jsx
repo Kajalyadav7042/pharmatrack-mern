@@ -21,7 +21,7 @@ function MedicineList() {
      const response = await getMedicines({
   search,page,limit:10
 });
-      console.log(response);
+      
 
       setMedicines(response.medicines);
       setTotalPages(response.totalPages);
