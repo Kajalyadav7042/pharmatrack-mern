@@ -17,6 +17,9 @@ import SalesHistory from "../pages/sales/SaleHistory";
 import UserList from "../pages/users/UserList";
 import AddUser from "../pages/users/AddUser";
 import EditUser from "../pages/users/EditUser";
+import AdminRoute from "../components/AdminRoute";
+import Profile from "../pages/Profile"
+
 
 
 
@@ -45,20 +48,28 @@ const router = createBrowserRouter([
 },
 {
     path:"/medicines/add",
-    element:<AddMedicine/>
+    element:<AdminRoute>
+      <AddMedicine/>
+    </AdminRoute>
 },
 {
     path:"/medicines/edit/:id",
-    element:<EditMedicine/>
+    element:<AdminRoute>
+      <EditMedicine/>
+    </AdminRoute>
 },
 {
     path:"/orders",
-    element:<PurchaseOrder/>
+    element:<AdminRoute>
+      <PurchaseOrder/>
+    </AdminRoute>
 },
 
 {
    path:"/orders/list",
-   element:<OrdersList/>
+   element:<AdminRoute>
+    <OrdersList/>
+   </AdminRoute>
 },
 {
     path:"/sales",
@@ -66,22 +77,22 @@ const router = createBrowserRouter([
 },
 {
   path: "/vendors",
-  element: <PrivateRoute>
-    <VendorList />
-  </PrivateRoute>
+  element:   <AdminRoute>
+      <VendorList />
+    </AdminRoute>
 },
 {
     path:"/vendors/add",
-    element:<PrivateRoute>
-      <AddVendor/>
-    </PrivateRoute>
+    element: <AdminRoute>
+      <AddVendor />
+    </AdminRoute>
 },
 
 {
   path: "/vendors/edit/:id",
-  element: <PrivateRoute>
-    <EditVendor />
-  </PrivateRoute>,
+  element:   <AdminRoute>
+      <EditVendor />
+    </AdminRoute>
 },
 {
   path:"/sales/history",
@@ -90,15 +101,25 @@ const router = createBrowserRouter([
 },
 {
   path: "/users",
-  element: <UserList />,
+  element: <AdminRoute>
+    <UserList />
+  </AdminRoute>,
 },
 {
   path: "/users/add",
-  element: <AddUser />,
+  element: <AdminRoute>
+    <AddUser />
+  </AdminRoute>,
 },
 {
   path: "/users/edit/:id",
-  element: <EditUser />,
+  element: <AdminRoute>
+    <EditUser />
+  </AdminRoute>,
+},
+{
+  path: "/profile",
+  element: <Profile />,
 },
 
 
